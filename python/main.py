@@ -24,12 +24,12 @@ def quantize(pixel):
     for i in range(3):
         for j in range(4):
             if pixel[i] >= arr[j]:
-                quantized[i] = j
+                quantized[i] = max(4-j-1, 0)
                 break
     return quantized[0] * 16 + quantized[1] * 4 + quantized[2] + 1
 
 
-def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz +-*/%'"+'"!?#&()~^|@;:.,[]{}<>_0123456789', width=50):
+def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz +-*/%'"+'"!?#&()~^|@;:.,[]{}<>_0123456789', width=60):
     img = Image.open(file_path)
     str_list = list(str_list)
     gray_img_array = np.asarray(img.convert('L').resize(
@@ -40,10 +40,9 @@ def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu
     aa = chr_map[gray_img_array].tolist()
     colors = [[quantize(pixel) for pixel in row] for row in color_img_array]
 
-    # print
-    # for i in range(len(gray_img_array)):print(''.join(aa[i]))
+    for i in range(len(gray_img_array)):
+        print(''.join(aa[i]))
 
-    # output aa
     with open("aa.ytt", "w") as f:
         f.write(
             '<?xml version="1.0" encoding="utf-8" ?>\n' +
@@ -54,7 +53,7 @@ def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu
             r = (i // 16) * 64
             g = ((i // 4) % 4) * 85
             b = (i % 4) * 64
-            heads += f'<pen id="{i+1}" fc="#{r:02x}{g:02x}{b:02x}" fs="3" sz="0" fo="255" bo="0" />\n'
+            heads += f'<pen id="{i+1}" fc="#{r:02x}{g:02x}{b:02x}" fs="3" sz="0" fo="255" bo="0" b="1" />\n'
         for i in range(25):
             heads += f'<wp id="{i+1}" ap="0" ah="0" av="{i*4}" />\n'
         f.write(heads)
@@ -69,4 +68,4 @@ def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu
         f.write('</body>\n</timedtext>')
 
 
-make_AA("input.png")
+make_AA("de.png")
