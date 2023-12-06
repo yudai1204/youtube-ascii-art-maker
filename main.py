@@ -43,7 +43,7 @@ def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu
     for i in range(len(gray_img_array)):
         print(''.join(aa[i]))
 
-    with open("aa.ytt", "w") as f:
+    with open("result/aa.ytt", "w") as f:
         f.write(
             '<?xml version="1.0" encoding="utf-8" ?>\n' +
             '<timedtext format="3">\n' +
@@ -68,4 +68,4 @@ def make_AA(file_path, str_list="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu
         f.write('</body>\n</timedtext>')
 
 
-make_AA("de.png")
+make_AA("imgs/input.png")
